@@ -2,29 +2,43 @@
 
 A proof-of-concept comparing **Old Reactive Forms** vs **New Signal Forms** in Angular 21.
 
-## 🚀 Running the Project
-
-```bash
-npm start
-```
-
-Navigate to `http://localhost:4200/`
-
 ## 🔄 Old Reactive Forms vs New Signal Forms
 
 ### **Major Differences**
 
-| Aspect                | Old Reactive Forms                        | New Signal Forms                   |
-| --------------------- | ----------------------------------------- | ---------------------------------- |
-| **State Management**  | `FormControl`/`FormGroup`/`FormArray`     | Plain signal with object/arrays    |
-| **API Style**         | Imperative (methods, subscriptions)       | Declarative (schema function)      |
-| **Reactivity**        | Observables + manual subscriptions        | Signals (automatic reactivity)     |
-| **Validation**        | Validator arrays per control              | Schema function with paths         |
-| **Type Safety**       | Manual (must define types)                | Inferred from model                |
-| **Two-way Binding**   | `[formControl]` directive                 | `[field]` directive                |
-| **Arrays**            | `FormArray` with `.push()`, `.removeAt()` | Plain array with immutable updates |
-| **Cross-field Logic** | `.valueChanges.subscribe()`               | `valueOf()` in validation logic    |
-| **Data Access**       | `.value` / `.getRawValue()`               | Call the signal: `model()`         |
+| Aspect                     | Old Reactive Forms                                                      | New Signal Forms                                                        |
+| -------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| **State Management**       | `FormControl`/`FormGroup`/`FormArray` classes                           | Plain signal with object/arrays - just JavaScript data structures       |
+| **API Style**              | Imperative (call methods, manage subscriptions manually)                | Declarative (define schema function, automatic tracking)                |
+| **Reactivity Model**       | Observables + manual subscriptions + `async` pipe                       | Signals with automatic reactivity + fine-grained updates                |
+| **Validation Setup**       | Validator arrays per control: `[Validators.required, Validators.email]` | Schema function with paths: `required(schemaPath.email)`                |
+| **Type Safety**            | Manual typing required, generics optional                               | Full type inference from signal model automatically                     |
+| **Two-way Binding**        | `[formControl]` / `formControlName` / `formGroupName` directives        | `[field]` directive only                                                |
+| **Arrays (Dynamic Lists)** | `FormArray` with `.push()`, `.removeAt()`, `.at(index)`                 | Plain arrays with immutable spread operations                           |
+| **Cross-field Validation** | `.valueChanges.subscribe()` + `updateValueAndValidity()`                | `valueOf()` in schema validation function - declarative                 |
+| **Data Access (Read)**     | `.value` (ignores disabled) / `.getRawValue()` (includes disabled)      | Call signal: `model()` - always includes all fields                     |
+| **Data Access (Write)**    | `.setValue()` / `.patchValue()` methods on controls                     | `signal.update()` / `signal.set()` with immutable patterns              |
+| **Conditional Fields**     | `.enable()` / `.disable()` methods called imperatively                  | `disabled(path, () => condition)` in schema - declarative               |
+| **Error Handling**         | `.errors` object on control, check with `hasError('errorKey')`          | `.errors()` array with objects `[{ kind, message }]`                    |
+| **Status Tracking**        | `.valid`, `.invalid`, `.pending`, `.touched`, `.dirty`, `.pristine`     | `.valid()`, `.invalid()`, `.touched()`, `.dirty()` - all signals        |
+| **Change Detection**       | Works with any change detection strategy                                | Best with `OnPush` - optimized for signals                              |
+| **Template Binding**       | `[formGroup]="form"` on form, `formControlName="field"` on inputs       | `[field]="userForm.field"` on inputs directly                           |
+| **Nested Forms**           | `FormGroup` within `FormGroup` using `formGroupName`                    | Nested objects in signal model with nested schema paths                 |
+| **Module/Import**          | `ReactiveFormsModule` from `@angular/forms`                             | `Field` directive and validators from `@angular/forms/signals`          |
+| **Change Subscription**    | `.valueChanges` observable, must unsubscribe                            | Effects or computed signals - automatic cleanup                         |
+| **Reset Behavior**         | `.reset()` method, optional default values                              | `signal.set()` with initial values                                      |
+| **Async Validators**       | `AsyncValidatorFn`, returns `Observable<ValidationErrors \| null>`      | Same function signature, integrated in schema                           |
+| **Custom Validators**      | `ValidatorFn` functions, return `ValidationErrors \| null`              | `validate()` in schema with access to `valueOf()` for cross-field logic |
+| **Form Builder**           | `FormBuilder` service for less verbose syntax                           | Not needed - signal declaration is already concise                      |
+| **Value Transformation**   | Combine with RxJS operators on `valueChanges`                           | Use computed signals or effects                                         |
+| **Testing**                | Mock `FormControl`/`FormGroup` or use actual instances                  | Test signals directly - simpler unit tests                              |
+| **Debugging**              | Chrome DevTools, RxJS debugging operators                               | Signal DevTools in Angular DevTools                                     |
+| **Bundle Size Impact**     | ~15KB (minified + gzipped) for ReactiveFormsModule                      | Smaller - signals are part of core, only validators imported            |
+| **Learning Resources**     | Extensive: docs, courses, Stack Overflow, 7+ years of content           | Limited: official docs, experimental guides, early adopter blogs        |
+| **Migration Path**         | N/A - this is the current standard                                      | Can coexist with reactive forms, gradual migration possible             |
+| **Browser Support**        | All browsers supported by Angular                                       | Same - signals are polyfilled for older browsers                        |
+| **Performance**            | Good - optimized over years, can have unnecessary change detection      | Better - fine-grained reactivity, fewer unnecessary updates             |
+| **Maturity & Stability**   | Stable since Angular 2 (2016), will be supported indefinitely           | Experimental (Angular 19+), API may change, production use at your risk |
 
 ### **Pros & Cons**
 
