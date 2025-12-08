@@ -14,143 +14,161 @@
     <div class="auto-save-status">💾 {{ autoSaveStatus() }}</div>
     }
 
-    <div class="form-field">
-      <label for="email-signal">Email</label>
-      <input
-        id="email-signal"
-        type="email"
-        [field]="userForm.email"
-        [class.invalid]="userForm.email().touched() && userForm.email().invalid()"
-      />
-      <div class="char-counter">{{ emailCharCount() }} characters</div>
-      @if (userForm.email().touched() && userForm.email().invalid()) {
-      <span class="error">
-        {{ userForm.email().errors()[0].message }}
-      </span>
-      }
-    </div>
-
-    <div class="form-field">
-      <label class="checkbox-label">
-        <input type="checkbox" [field]="userForm.longPassword" />
-        Long password (min 10 characters)
-      </label>
-    </div>
-
-    <div class="form-field">
-      <label for="password-signal">Password</label>
-      <input
-        id="password-signal"
-        type="password"
-        [field]="userForm.password"
-        [class.invalid]="userForm.password().touched() && userForm.password().invalid()"
-      />
-      @if (userForm.password().touched() && userForm.password().invalid()) {
-      <span class="error">
-        {{ userForm.password().errors()[0].message }}
-      </span>
-      }
-    </div>
-
-    <div class="form-field">
-      <label for="confirmPassword-signal">Confirm Password</label>
-      <input
-        id="confirmPassword-signal"
-        type="password"
-        [field]="userForm.confirmPassword"
-        [class.invalid]="
-          userForm.confirmPassword().touched() && userForm.confirmPassword().invalid()
-        "
-      />
-      @if (userForm.confirmPassword().touched() && userForm.confirmPassword().invalid()) {
-      <span class="error">
-        {{ userForm.confirmPassword().errors()[0].message }}
-      </span>
-      }
-    </div>
-    <div class="form-field">
-      <label class="checkbox-label">
-        <input type="checkbox" [field]="userForm.setUsername" />
-        Set username
-      </label>
-    </div>
-
-    <div class="form-field">
-      <label for="username-signal">Username</label>
-      <input
-        id="username-signal"
-        type="text"
-        [field]="userForm.username"
-        [class.invalid]="userForm.username().touched() && userForm.username().invalid()"
-      />
-      @if (userForm.username().touched() && userForm.username().invalid() &&
-      !userForm.username().disabled()) {
-      <span class="error">
-        {{ userForm.username().errors()[0].message }}
-      </span>
-      }
-    </div>
-
-    <div class="form-field">
-      <label>Reincarnation Wishes (max 3)</label>
-
-      <div class="icon-selector">
-        <button
-          type="button"
-          class="icon-btn"
-          (click)="setReincarnationValue('dolphin')"
-          title="Dolphin"
-        >
-          🐬
-        </button>
-        <button type="button" class="icon-btn" (click)="setReincarnationValue('tree')" title="Tree">
-          🌳
-        </button>
-        <button type="button" class="icon-btn" (click)="setReincarnationValue('pig')" title="Pig">
-          🐷
-        </button>
-        <button
-          type="button"
-          class="icon-btn"
-          (click)="setReincarnationValue('beetle')"
-          title="Beetle"
-        >
-          🪲
-        </button>
-        <button
-          type="button"
-          class="icon-btn"
-          (click)="setReincarnationValue('waffle')"
-          title="Waffle"
-        >
-          🧇
-        </button>
-      </div>
-
-      @for (wish of formModel().reincarnationWishes; track $index) {
-      <div class="array-item">
+    <!-- Email Section -->
+    <div class="form-section">
+      <div class="form-field">
+        <label for="email-signal">Email</label>
         <input
-          type="text"
-          [field]="userForm.reincarnationWishes[$index]"
-          [class.invalid]="
-            userForm.reincarnationWishes[$index]().touched() &&
-            userForm.reincarnationWishes[$index]().invalid()
-          "
-          placeholder="What do you wish to be reincarnated as?"
+          id="email-signal"
+          type="email"
+          [field]="userForm.email"
+          [class.invalid]="userForm.email().touched() && userForm.email().invalid()"
         />
-        <button type="button" class="remove-btn" (click)="removeReincarnationWish($index)">
-          Remove
+        <div class="char-counter">{{ emailCharCount() }} characters</div>
+        @if (userForm.email().touched() && userForm.email().invalid()) {
+        <span class="error">
+          {{ userForm.email().errors()[0].message }}
+        </span>
+        }
+      </div>
+    </div>
+
+    <!-- Password Section -->
+    <div class="form-section">
+      <div class="form-field">
+        <label class="checkbox-label">
+          <input type="checkbox" [field]="userForm.longPassword" />
+          Long password (min 10 characters)
+        </label>
+      </div>
+
+      <div class="form-field">
+        <label for="password-signal">Password</label>
+        <input
+          id="password-signal"
+          type="password"
+          [field]="userForm.password"
+          [class.invalid]="userForm.password().touched() && userForm.password().invalid()"
+        />
+        @if (userForm.password().touched() && userForm.password().invalid()) {
+        <span class="error">
+          {{ userForm.password().errors()[0].message }}
+        </span>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="confirmPassword-signal">Confirm Password</label>
+        <input
+          id="confirmPassword-signal"
+          type="password"
+          [field]="userForm.confirmPassword"
+          [class.invalid]="
+            userForm.confirmPassword().touched() && userForm.confirmPassword().invalid()
+          "
+        />
+        @if (userForm.confirmPassword().touched() && userForm.confirmPassword().invalid()) {
+        <span class="error">
+          {{ userForm.confirmPassword().errors()[0].message }}
+        </span>
+        }
+      </div>
+    </div>
+
+    <!-- Username Section -->
+    <div class="form-section">
+      <div class="form-field">
+        <label class="checkbox-label">
+          <input type="checkbox" [field]="userForm.setUsername" />
+          Set username
+        </label>
+      </div>
+
+      <div class="form-field">
+        <label for="username-signal">Username</label>
+        <input
+          id="username-signal"
+          type="text"
+          [field]="userForm.username"
+          [class.invalid]="userForm.username().touched() && userForm.username().invalid()"
+        />
+        @if (userForm.username().touched() && userForm.username().invalid() &&
+        !userForm.username().disabled()) {
+        <span class="error">
+          {{ userForm.username().errors()[0].message }}
+        </span>
+        }
+      </div>
+    </div>
+
+    <!-- Reincarnation Section -->
+    <div class="form-section">
+      <div class="form-field">
+        <label>Reincarnation Wishes (max 3)</label>
+
+        <div class="icon-selector">
+          <button
+            type="button"
+            class="icon-btn"
+            (click)="setReincarnationValue('dolphin')"
+            title="Dolphin"
+          >
+            🐬
+          </button>
+          <button
+            type="button"
+            class="icon-btn"
+            (click)="setReincarnationValue('tree')"
+            title="Tree"
+          >
+            🌳
+          </button>
+          <button type="button" class="icon-btn" (click)="setReincarnationValue('pig')" title="Pig">
+            🐷
+          </button>
+          <button
+            type="button"
+            class="icon-btn"
+            (click)="setReincarnationValue('beetle')"
+            title="Beetle"
+          >
+            🪲
+          </button>
+          <button
+            type="button"
+            class="icon-btn"
+            (click)="setReincarnationValue('waffle')"
+            title="Waffle"
+          >
+            🧇
+          </button>
+        </div>
+
+        @for (wish of formModel().reincarnationWishes; track $index) {
+        <div class="array-item">
+          <input
+            type="text"
+            [field]="userForm.reincarnationWishes[$index]"
+            [class.invalid]="
+              userForm.reincarnationWishes[$index]().touched() &&
+              userForm.reincarnationWishes[$index]().invalid()
+            "
+            placeholder="What do you wish to be reincarnated as?"
+          />
+          <button type="button" class="remove-btn" (click)="removeReincarnationWish($index)">
+            Remove
+          </button>
+        </div>
+        }
+        <button
+          type="button"
+          class="add-btn"
+          (click)="addReincarnationWish()"
+          [disabled]="formModel().reincarnationWishes.length >= 3"
+        >
+          Add Reincarnation Wish
         </button>
       </div>
-      }
-      <button
-        type="button"
-        class="add-btn"
-        (click)="addReincarnationWish()"
-        [disabled]="formModel().reincarnationWishes.length >= 3"
-      >
-        Add Reincarnation Wish
-      </button>
     </div>
 
     <button type="submit" [disabled]="userForm().invalid()">Submit</button>

@@ -7,137 +7,155 @@
     <div class="auto-save-status">💾 {{ autoSaveStatus }}</div>
     }
 
-    <div class="form-field">
-      <label for="email">Email</label>
-      <input
-        id="email"
-        type="email"
-        formControlName="email"
-        [class.invalid]="form.get('email')?.touched && form.get('email')?.invalid"
-      />
-      <div class="char-counter">{{ emailCharCount }} characters</div>
-      @if (form.get('email')?.touched && form.get('email')?.invalid) {
-      <span class="error">{{ getEmailError() }}</span>
-      }
-    </div>
-
-    <div class="form-field">
-      <label class="checkbox-label">
-        <input type="checkbox" formControlName="longPassword" />
-        Long password (min 10 characters)
-      </label>
-    </div>
-
-    <div class="form-field">
-      <label for="password">Password</label>
-      <input
-        id="password"
-        type="password"
-        formControlName="password"
-        [class.invalid]="form.get('password')?.touched && form.get('password')?.invalid"
-      />
-      @if (form.get('password')?.touched && form.get('password')?.invalid) {
-      <span class="error">{{ getPasswordError() }}</span>
-      }
-    </div>
-
-    <div class="form-field">
-      <label for="confirmPassword">Confirm Password</label>
-      <input
-        id="confirmPassword"
-        type="password"
-        formControlName="confirmPassword"
-        [class.invalid]="
-          form.get('confirmPassword')?.touched && form.get('confirmPassword')?.invalid
-        "
-      />
-      @if (form.get('confirmPassword')?.touched && form.get('confirmPassword')?.invalid) {
-      <span class="error">{{ getConfirmPasswordError() }}</span>
-      }
-    </div>
-    <div class="form-field">
-      <label class="checkbox-label">
-        <input type="checkbox" formControlName="setUsername" />
-        Set username
-      </label>
-    </div>
-
-    <div class="form-field">
-      <label for="username">Username</label>
-      <input
-        id="username"
-        type="text"
-        formControlName="username"
-        [class.invalid]="form.get('username')?.touched && form.get('username')?.invalid"
-      />
-      @if (form.get('username')?.touched && form.get('username')?.invalid &&
-      form.get('username')?.enabled) {
-      <span class="error">{{ getUsernameError() }}</span>
-      }
-    </div>
-
-    <div class="form-field">
-      <label>Reincarnation Wishes (max 3)</label>
-
-      <div class="icon-selector">
-        <button
-          type="button"
-          class="icon-btn"
-          (click)="setReincarnationValue('dolphin')"
-          title="Dolphin"
-        >
-          🐬
-        </button>
-        <button type="button" class="icon-btn" (click)="setReincarnationValue('tree')" title="Tree">
-          🌳
-        </button>
-        <button type="button" class="icon-btn" (click)="setReincarnationValue('pig')" title="Pig">
-          🐷
-        </button>
-        <button
-          type="button"
-          class="icon-btn"
-          (click)="setReincarnationValue('beetle')"
-          title="Beetle"
-        >
-          🪲
-        </button>
-        <button
-          type="button"
-          class="icon-btn"
-          (click)="setReincarnationValue('waffle')"
-          title="Waffle"
-        >
-          🧇
-        </button>
-      </div>
-
-      <div formArrayName="reincarnationWishes">
-        @for (wish of reincarnationWishes.controls; track $index) {
-        <div class="array-item">
-          <input
-            type="text"
-            [formControlName]="$index"
-            [class.invalid]="wish.touched && wish.invalid"
-            placeholder="What do you wish to be reincarnated as?"
-          />
-          <button type="button" class="remove-btn" (click)="removeReincarnationWish($index)">
-            Remove
-          </button>
-          @if (wish.touched && wish.invalid) {
-          <span class="error">{{ getReincarnationWishError($index) }}</span>
-          }
-        </div>
+    <!-- Email Section -->
+    <div class="form-section">
+      <div class="form-field">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          [class.invalid]="form.get('email')?.touched && form.get('email')?.invalid"
+        />
+        <div class="char-counter">{{ emailCharCount }} characters</div>
+        @if (form.get('email')?.touched && form.get('email')?.invalid) {
+        <span class="error">{{ getEmailError() }}</span>
         }
       </div>
-      <button
-        type="button"
-        class="add-btn"
-        (click)="addReincarnationWish()"
-        [disabled]="reincarnationWishes.length >= 3"
-      >
-        Add Reincarnation Wish
-      </button>
+    </div>
+
+    <!-- Password Section -->
+    <div class="form-section">
+      <div class="form-field">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="longPassword" />
+          Long password (min 10 characters)
+        </label>
+      </div>
+
+      <div class="form-field">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          [class.invalid]="form.get('password')?.touched && form.get('password')?.invalid"
+        />
+        @if (form.get('password')?.touched && form.get('password')?.invalid) {
+        <span class="error">{{ getPasswordError() }}</span>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          formControlName="confirmPassword"
+          [class.invalid]="
+            form.get('confirmPassword')?.touched && form.get('confirmPassword')?.invalid
+          "
+        />
+        @if (form.get('confirmPassword')?.touched && form.get('confirmPassword')?.invalid) {
+        <span class="error">{{ getConfirmPasswordError() }}</span>
+        }
+      </div>
+    </div>
+
+    <!-- Username Section -->
+    <div class="form-section">
+      <div class="form-field">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="setUsername" />
+          Set username
+        </label>
+      </div>
+
+      <div class="form-field">
+        <label for="username">Username</label>
+        <input
+          id="username"
+          type="text"
+          formControlName="username"
+          [class.invalid]="form.get('username')?.touched && form.get('username')?.invalid"
+        />
+        @if (form.get('username')?.touched && form.get('username')?.invalid &&
+        form.get('username')?.enabled) {
+        <span class="error">{{ getUsernameError() }}</span>
+        }
+      </div>
+    </div>
+
+    <!-- Reincarnation Section -->
+    <div class="form-section">
+      <div class="form-field">
+        <label>Reincarnation Wishes (max 3)</label>
+
+        <div class="icon-selector">
+          <button
+            type="button"
+            class="icon-btn"
+            (click)="setReincarnationValue('dolphin')"
+            title="Dolphin"
+          >
+            🐬
+          </button>
+          <button
+            type="button"
+            class="icon-btn"
+            (click)="setReincarnationValue('tree')"
+            title="Tree"
+          >
+            🌳
+          </button>
+          <button type="button" class="icon-btn" (click)="setReincarnationValue('pig')" title="Pig">
+            🐷
+          </button>
+          <button
+            type="button"
+            class="icon-btn"
+            (click)="setReincarnationValue('beetle')"
+            title="Beetle"
+          >
+            🪲
+          </button>
+          <button
+            type="button"
+            class="icon-btn"
+            (click)="setReincarnationValue('waffle')"
+            title="Waffle"
+          >
+            🧇
+          </button>
+        </div>
+
+        <div formArrayName="reincarnationWishes">
+          @for (wish of reincarnationWishes.controls; track $index) {
+          <div class="array-item">
+            <input
+              type="text"
+              [formControlName]="$index"
+              [class.invalid]="wish.touched && wish.invalid"
+              placeholder="What do you wish to be reincarnated as?"
+            />
+            <button type="button" class="remove-btn" (click)="removeReincarnationWish($index)">
+              Remove
+            </button>
+            @if (wish.touched && wish.invalid) {
+            <span class="error">{{ getReincarnationWishError($index) }}</span>
+            }
+          </div>
+          }
+        </div>
+        <button
+          type="button"
+          class="add-btn"
+          (click)="addReincarnationWish()"
+          [disabled]="reincarnationWishes.length >= 3"
+        >
+          Add Reincarnation Wish
+        </button>
+      </div>
     </div>
 
     <button type="submit" [disabled]="form.invalid">Submit</button>
