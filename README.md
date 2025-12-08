@@ -28,7 +28,6 @@ A proof-of-concept comparing **Old Reactive Forms** vs **New Signal Forms** in A
 | **Reset Behavior**         | `.reset()` method, optional default values                              | `signal.set()` with initial values                                      |
 | **Async Validators**       | `AsyncValidatorFn`, returns `Observable<ValidationErrors \| null>`      | Same function signature, integrated in schema                           |
 | **Custom Validators**      | `ValidatorFn` functions, return `ValidationErrors \| null`              | `validate()` in schema with access to `valueOf()` for cross-field logic |
-| **Form Builder**           | `FormBuilder` service for less verbose syntax                           | Not needed - signal declaration is already concise                      |
 | **Value Transformation**   | Combine with RxJS operators on `valueChanges`                           | Use computed signals or effects                                         |
 | **Testing**                | Mock `FormControl`/`FormGroup` or use actual instances                  | Test signals directly - simpler unit tests                              |
 | **Bundle Size Impact**     | ~15KB (minified + gzipped) for ReactiveFormsModule                      | Smaller - signals are part of core, only validators imported            |
