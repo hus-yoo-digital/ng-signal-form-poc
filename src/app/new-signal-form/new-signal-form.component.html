@@ -1,0 +1,45 @@
+<div class="form-container">
+  <h2>New Way: Signal Forms (@angular/forms/signals)</h2>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-field">
+      <label for="email-signal">Email</label>
+      <input
+        id="email-signal"
+        type="email"
+        [field]="userForm.email"
+        [class.invalid]="userForm.email().touched() && userForm.email().invalid()"
+      />
+      @if (userForm.email().touched() && userForm.email().invalid()) {
+      <span class="error">
+        {{ userForm.email().errors()[0].message }}
+      </span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label class="checkbox-label">
+        <input type="checkbox" [field]="userForm.setUsername" />
+        Set username
+      </label>
+    </div>
+
+    <div class="form-field">
+      <label for="username-signal">Username</label>
+      <input
+        id="username-signal"
+        type="text"
+        [field]="userForm.username"
+        [class.invalid]="userForm.username().touched() && userForm.username().invalid()"
+      />
+      @if (userForm.username().touched() && userForm.username().invalid() &&
+      !userForm.username().disabled()) {
+      <span class="error">
+        {{ userForm.username().errors()[0].message }}
+      </span>
+      }
+    </div>
+
+    <button type="submit" [disabled]="userForm().invalid()">Submit</button>
+  </form>
+</div>
