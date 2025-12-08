@@ -1,6 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { disabled, email, Field, form, minLength, pattern, required } from '@angular/forms/signals';
+import {
+  disabled,
+  email,
+  Field,
+  form,
+  minLength,
+  pattern,
+  required,
+  validate,
+} from '@angular/forms/signals';
 
 @Component({
   selector: 'app-new-signal-form',
@@ -13,15 +22,37 @@ import { disabled, email, Field, form, minLength, pattern, required } from '@ang
 export class NewSignalFormComponent {
   formModel = signal({
     email: '',
+    password: '',
+    confirmPassword: '',
     setUsername: false,
     username: '',
   });
 
-  // schemaPath type: SchemaPathTree<{ email: string; setUsername: boolean; username: string; }>
+  // schemaPath type: SchemaPathTree<{ email: string; password: string; confirmPassword: string; setUsername: boolean; username: string; }>
   userForm = form(this.formModel, (schemaPath) => {
     // Email validation
     required(schemaPath.email, { message: 'Email is required' });
     email(schemaPath.email, { message: 'Enter a valid email address' });
+
+    // Password validation
+    required(schemaPath.password, { message: 'Password is required' });
+    minLength(schemaPath.password, 8, { message: 'Password must be at least 8 characters' });
+
+    // Confirm password validation
+    required(schemaPath.confirmPassword, { message: 'Please confirm your password' });
+    // Cross-field validation: confirmPassword must match password
+    validate(schemaPath.confirmPassword, ({ valueOf, value }: any) => {
+      const password = valueOf(schemaPath.password);
+      const confirmPassword = value();
+
+      if (confirmPassword && password !== confirmPassword) {
+        return {
+          kind: 'passwordMismatch',
+          message: 'Passwords do not match',
+        };
+      }
+      return null;
+    });
 
     // Username is disabled when checkbox is false
     disabled(schemaPath.username, ({ valueOf }: any) => !valueOf(schemaPath.setUsername));

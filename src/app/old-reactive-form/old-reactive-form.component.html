@@ -16,6 +16,33 @@
     </div>
 
     <div class="form-field">
+      <label for="password">Password</label>
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        [class.invalid]="form.get('password')?.touched && form.get('password')?.invalid"
+      />
+      @if (form.get('password')?.touched && form.get('password')?.invalid) {
+      <span class="error">{{ getPasswordError() }}</span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="confirmPassword">Confirm Password</label>
+      <input
+        id="confirmPassword"
+        type="password"
+        formControlName="confirmPassword"
+        [class.invalid]="
+          form.get('confirmPassword')?.touched && form.get('confirmPassword')?.invalid
+        "
+      />
+      @if (form.get('confirmPassword')?.touched && form.get('confirmPassword')?.invalid) {
+      <span class="error">{{ getConfirmPasswordError() }}</span>
+      }
+    </div>
+    <div class="form-field">
       <label class="checkbox-label">
         <input type="checkbox" formControlName="setUsername" />
         Set username

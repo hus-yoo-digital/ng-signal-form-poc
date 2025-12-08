@@ -18,6 +18,37 @@
     </div>
 
     <div class="form-field">
+      <label for="password-signal">Password</label>
+      <input
+        id="password-signal"
+        type="password"
+        [field]="userForm.password"
+        [class.invalid]="userForm.password().touched() && userForm.password().invalid()"
+      />
+      @if (userForm.password().touched() && userForm.password().invalid()) {
+      <span class="error">
+        {{ userForm.password().errors()[0].message }}
+      </span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="confirmPassword-signal">Confirm Password</label>
+      <input
+        id="confirmPassword-signal"
+        type="password"
+        [field]="userForm.confirmPassword"
+        [class.invalid]="
+          userForm.confirmPassword().touched() && userForm.confirmPassword().invalid()
+        "
+      />
+      @if (userForm.confirmPassword().touched() && userForm.confirmPassword().invalid()) {
+      <span class="error">
+        {{ userForm.confirmPassword().errors()[0].message }}
+      </span>
+      }
+    </div>
+    <div class="form-field">
       <label class="checkbox-label">
         <input type="checkbox" [field]="userForm.setUsername" />
         Set username
