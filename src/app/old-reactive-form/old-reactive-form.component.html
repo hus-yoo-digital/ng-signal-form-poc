@@ -64,6 +64,36 @@
       }
     </div>
 
+    <div class="form-field">
+      <label>Reincarnation Wishes (max 3)</label>
+      <div formArrayName="reincarnationWishes">
+        @for (wish of reincarnationWishes.controls; track $index) {
+        <div class="array-item">
+          <input
+            type="text"
+            [formControlName]="$index"
+            [class.invalid]="wish.touched && wish.invalid"
+            placeholder="What do you wish to be reincarnated as?"
+          />
+          <button type="button" class="remove-btn" (click)="removeReincarnationWish($index)">
+            Remove
+          </button>
+          @if (wish.touched && wish.invalid) {
+          <span class="error">{{ getReincarnationWishError($index) }}</span>
+          }
+        </div>
+        }
+      </div>
+      <button
+        type="button"
+        class="add-btn"
+        (click)="addReincarnationWish()"
+        [disabled]="reincarnationWishes.length >= 3"
+      >
+        Add Reincarnation Wish
+      </button>
+    </div>
+
     <button type="submit" [disabled]="form.invalid">Submit</button>
   </form>
 </div>

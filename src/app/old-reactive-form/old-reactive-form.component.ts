@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-old-reactive-form',
@@ -19,6 +19,7 @@ export class OldReactiveFormComponent implements OnInit {
       confirmPassword: new FormControl('', [Validators.required]),
       setUsername: new FormControl(false),
       username: new FormControl({ value: '', disabled: true }),
+      reincarnationWishes: new FormArray([], Validators.maxLength(3)),
     });
 
     // Watch password field to validate confirmPassword when it changes
@@ -114,6 +115,28 @@ export class OldReactiveFormComponent implements OnInit {
     }
     if (confirmControl?.hasError('passwordMismatch')) {
       return 'Passwords do not match';
+    }
+    return '';
+  }
+
+  get reincarnationWishes(): FormArray {
+    return this.form.get('reincarnationWishes') as FormArray;
+  }
+
+  addReincarnationWish() {
+    if (this.reincarnationWishes.length < 3) {
+      this.reincarnationWishes.push(new FormControl('', Validators.required));
+    }
+  }
+
+  removeReincarnationWish(index: number) {
+    this.reincarnationWishes.removeAt(index);
+  }
+
+  getReincarnationWishError(index: number): string {
+    const control = this.reincarnationWishes.at(index);
+    if (control?.hasError('required')) {
+      return 'Reincarnation wish is required';
     }
     return '';
   }

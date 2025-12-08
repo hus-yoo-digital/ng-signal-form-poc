@@ -26,6 +26,7 @@ export class NewSignalFormComponent {
     confirmPassword: '',
     setUsername: false,
     username: '',
+    reincarnationWishes: [] as string[],
   });
 
   // schemaPath type: SchemaPathTree<{ email: string; password: string; confirmPassword: string; setUsername: boolean; username: string; }>
@@ -72,7 +73,38 @@ export class NewSignalFormComponent {
           ? 'Username can only contain letters, numbers, dashes, and underscores'
           : '',
     });
+
+    // Reincarnation wishes validation - each array item must be required
+    // We'll use a custom validate to check each item
+    validate(schemaPath.reincarnationWishes, ({ value }: any) => {
+      const wishes = value() as string[];
+      // Check if any wish is empty
+      const hasEmptyWish = wishes.some((wish: string) => !wish || wish.trim() === '');
+      if (hasEmptyWish) {
+        return {
+          kind: 'required',
+          message: 'All reincarnation wishes must be filled',
+        };
+      }
+      return null;
+    });
   });
+
+  addReincarnationWish() {
+    if (this.formModel().reincarnationWishes.length < 3) {
+      this.formModel.update((current) => ({
+        ...current,
+        reincarnationWishes: [...current.reincarnationWishes, ''],
+      }));
+    }
+  }
+
+  removeReincarnationWish(index: number) {
+    this.formModel.update((current) => ({
+      ...current,
+      reincarnationWishes: current.reincarnationWishes.filter((_, i) => i !== index),
+    }));
+  }
 
   onSubmit() {
     if (this.userForm().valid()) {
