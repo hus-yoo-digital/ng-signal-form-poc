@@ -24,6 +24,7 @@ export class NewSignalFormComponent {
     email: '',
     password: '',
     confirmPassword: '',
+    longPassword: false,
     setUsername: false,
     username: '',
     reincarnationWishes: [] as string[],
@@ -37,7 +38,19 @@ export class NewSignalFormComponent {
 
     // Password validation
     required(schemaPath.password, { message: 'Password is required' });
-    minLength(schemaPath.password, 8, { message: 'Password must be at least 8 characters' });
+    // Conditional minLength based on longPassword checkbox
+    validate(schemaPath.password, ({ valueOf, value }: any) => {
+      const isLongPassword = valueOf(schemaPath.longPassword);
+      const password = value();
+
+      if (isLongPassword && password && password.length < 10) {
+        return {
+          kind: 'minLength',
+          message: 'Password must be at least 10 characters',
+        };
+      }
+      return null;
+    });
 
     // Confirm password validation
     required(schemaPath.confirmPassword, { message: 'Please confirm your password' });

@@ -26,6 +26,13 @@
     </div>
 
     <div class="form-field">
+      <label class="checkbox-label">
+        <input type="checkbox" [field]="userForm.longPassword" />
+        Long password (min 10 characters)
+      </label>
+    </div>
+
+    <div class="form-field">
       <label for="password-signal">Password</label>
       <input
         id="password-signal"

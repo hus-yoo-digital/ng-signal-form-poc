@@ -19,6 +19,7 @@ A proof-of-concept comparing **Old Reactive Forms** vs **New Signal Forms** in A
 | **Data Access (Read)**     | `.value` (ignores disabled) / `.getRawValue()` (includes disabled)      | Call signal: `model()` - always includes all fields                     |
 | **Data Access (Write)**    | `.setValue()` / `.patchValue()` methods on controls                     | `signal.update()` / `signal.set()` with immutable patterns              |
 | **Conditional Fields**     | `.enable()` / `.disable()` methods called imperatively                  | `disabled(path, () => condition)` in schema - declarative               |
+| **Conditional Validation** | `.setValidators()` / `.clearValidators()` + `.updateValueAndValidity()` | `validate()` with conditional logic using `valueOf()` - automatic       |
 | **Error Handling**         | `.errors` object on control, check with `hasError('errorKey')`          | `.errors()` array with objects `[{ kind, message }]`                    |
 | **Status Tracking**        | `.valid`, `.invalid`, `.pending`, `.touched`, `.dirty`, `.pristine`     | `.valid()`, `.invalid()`, `.touched()`, `.dirty()` - all signals        |
 | **Change Detection**       | Works with any change detection strategy                                | Best with `OnPush` - optimized for signals                              |

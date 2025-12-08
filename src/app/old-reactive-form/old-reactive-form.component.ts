@@ -15,8 +15,9 @@ export class OldReactiveFormComponent implements OnInit {
   ngOnInit() {
     this.form = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+      password: new FormControl('', [Validators.required]),
       confirmPassword: new FormControl('', [Validators.required]),
+      longPassword: new FormControl(false),
       setUsername: new FormControl(false),
       username: new FormControl({ value: '', disabled: true }),
       reincarnationWishes: new FormArray([], Validators.maxLength(3)),
@@ -45,6 +46,17 @@ export class OldReactiveFormComponent implements OnInit {
           confirmControl?.setErrors(Object.keys(errors).length > 0 ? errors : null);
         }
       }
+    });
+
+    // Watch the longPassword checkbox to set/clear password minLength validation
+    this.form.get('longPassword')?.valueChanges.subscribe((isLongPassword) => {
+      const passwordControl = this.form.get('password');
+      if (isLongPassword) {
+        passwordControl?.setValidators([Validators.required, Validators.minLength(10)]);
+      } else {
+        passwordControl?.setValidators([Validators.required]);
+      }
+      passwordControl?.updateValueAndValidity();
     });
 
     // Watch the checkbox to enable/disable username field
@@ -103,7 +115,10 @@ export class OldReactiveFormComponent implements OnInit {
       return 'Password is required';
     }
     if (passwordControl?.hasError('minlength')) {
-      return 'Password must be at least 8 characters';
+      const isLongPassword = this.form.get('longPassword')?.value;
+      return isLongPassword
+        ? 'Password must be at least 10 characters'
+        : 'Password must be at least 8 characters';
     }
     return '';
   }
