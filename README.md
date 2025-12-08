@@ -22,10 +22,8 @@ A proof-of-concept comparing **Old Reactive Forms** vs **New Signal Forms** in A
 | **Conditional Validation** | `.setValidators()` / `.clearValidators()` + `.updateValueAndValidity()` | `validate()` with conditional logic using `valueOf()` - automatic       |
 | **Error Handling**         | `.errors` object on control, check with `hasError('errorKey')`          | `.errors()` array with objects `[{ kind, message }]`                    |
 | **Status Tracking**        | `.valid`, `.invalid`, `.pending`, `.touched`, `.dirty`, `.pristine`     | `.valid()`, `.invalid()`, `.touched()`, `.dirty()` - all signals        |
-| **Change Detection**       | Works with any change detection strategy                                | Best with `OnPush` - optimized for signals                              |
 | **Template Binding**       | `[formGroup]="form"` on form, `formControlName="field"` on inputs       | `[field]="userForm.field"` on inputs directly                           |
 | **Nested Forms**           | `FormGroup` within `FormGroup` using `formGroupName`                    | Nested objects in signal model with nested schema paths                 |
-| **Module/Import**          | `ReactiveFormsModule` from `@angular/forms`                             | `Field` directive and validators from `@angular/forms/signals`          |
 | **Change Subscription**    | `.valueChanges` observable, must unsubscribe                            | Effects or computed signals - automatic cleanup                         |
 | **Reset Behavior**         | `.reset()` method, optional default values                              | `signal.set()` with initial values                                      |
 | **Async Validators**       | `AsyncValidatorFn`, returns `Observable<ValidationErrors \| null>`      | Same function signature, integrated in schema                           |
@@ -33,9 +31,7 @@ A proof-of-concept comparing **Old Reactive Forms** vs **New Signal Forms** in A
 | **Form Builder**           | `FormBuilder` service for less verbose syntax                           | Not needed - signal declaration is already concise                      |
 | **Value Transformation**   | Combine with RxJS operators on `valueChanges`                           | Use computed signals or effects                                         |
 | **Testing**                | Mock `FormControl`/`FormGroup` or use actual instances                  | Test signals directly - simpler unit tests                              |
-| **Debugging**              | Chrome DevTools, RxJS debugging operators                               | Signal DevTools in Angular DevTools                                     |
 | **Bundle Size Impact**     | ~15KB (minified + gzipped) for ReactiveFormsModule                      | Smaller - signals are part of core, only validators imported            |
-| **Migration Path**         | N/A - this is the current standard                                      | Can coexist with reactive forms, gradual migration possible             |
 | **Performance**            | Good - optimized over years, can have unnecessary change detection      | Better - fine-grained reactivity, fewer unnecessary updates             |
 
 ### **Pros & Cons**
