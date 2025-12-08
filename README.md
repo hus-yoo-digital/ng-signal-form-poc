@@ -2,29 +2,6 @@
 
 A proof-of-concept comparing **Old Reactive Forms** vs **New Signal Forms** in Angular 21.
 
-## 📋 Overview
-
-This project demonstrates two parallel implementations of the same form with identical business logic, showcasing the differences between traditional reactive forms and the new signal-based approach.
-
-## 🚀 Running the Project
-
-```bash
-npm install
-npm start
-```
-
-Navigate to `http://localhost:4200/`
-
-## 🎯 Form Features Demonstrated
-
-Both forms implement:
-
-- Email field (required, email format)
-- Password field (required, min 8 characters)
-- Confirm password field (cross-field validation)
-- Username field (conditionally enabled via checkbox)
-- Reincarnation wishes (dynamic array, max 3 items)
-
 ## 🔄 Old Reactive Forms vs New Signal Forms
 
 ### **Major Differences**
