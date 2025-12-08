@@ -11,6 +11,8 @@ import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } fr
 })
 export class OldReactiveFormComponent implements OnInit {
   form!: FormGroup;
+  emailCharCount = 0;
+  autoSaveStatus = '';
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -46,6 +48,18 @@ export class OldReactiveFormComponent implements OnInit {
           confirmControl?.setErrors(Object.keys(errors).length > 0 ? errors : null);
         }
       }
+    });
+
+    // Watch email field to update character count
+    this.form.get('email')?.valueChanges.subscribe((value) => {
+      this.emailCharCount = value ? value.length : 0;
+    });
+
+    // Subscribe to entire form changes for auto-save
+    // Must manually manage this subscription and remember to unsubscribe!
+    this.form.valueChanges.subscribe((formData) => {
+      localStorage.setItem('reactiveFormDraft', JSON.stringify(formData));
+      this.autoSaveStatus = `Auto-saved at ${new Date().toLocaleTimeString()}`;
     });
 
     // Watch the longPassword checkbox to set/clear password minLength validation

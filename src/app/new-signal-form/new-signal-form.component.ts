@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, signal } from '@angular/core';
 import {
   disabled,
   email,
@@ -29,6 +29,22 @@ export class NewSignalFormComponent {
     username: '',
     reincarnationWishes: [] as string[],
   });
+
+  // Computed signal: automatically updates when email changes
+  emailCharCount = computed(() => this.formModel().email.length);
+
+  // Signal for auto-save status message
+  autoSaveStatus = signal<string>('');
+
+  constructor() {
+    // Effect: automatically saves form to localStorage whenever it changes
+    // No manual subscription needed, no cleanup required!
+    effect(() => {
+      const formData = this.formModel();
+      localStorage.setItem('signalFormDraft', JSON.stringify(formData));
+      this.autoSaveStatus.set(`Auto-saved at ${new Date().toLocaleTimeString()}`);
+    });
+  }
 
   // schemaPath type: SchemaPathTree<{ email: string; password: string; confirmPassword: string; setUsername: boolean; username: string; }>
   userForm = form(this.formModel, (schemaPath) => {

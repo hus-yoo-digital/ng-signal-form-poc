@@ -35,11 +35,8 @@ A proof-of-concept comparing **Old Reactive Forms** vs **New Signal Forms** in A
 | **Testing**                | Mock `FormControl`/`FormGroup` or use actual instances                  | Test signals directly - simpler unit tests                              |
 | **Debugging**              | Chrome DevTools, RxJS debugging operators                               | Signal DevTools in Angular DevTools                                     |
 | **Bundle Size Impact**     | ~15KB (minified + gzipped) for ReactiveFormsModule                      | Smaller - signals are part of core, only validators imported            |
-| **Learning Resources**     | Extensive: docs, courses, Stack Overflow, 7+ years of content           | Limited: official docs, experimental guides, early adopter blogs        |
 | **Migration Path**         | N/A - this is the current standard                                      | Can coexist with reactive forms, gradual migration possible             |
-| **Browser Support**        | All browsers supported by Angular                                       | Same - signals are polyfilled for older browsers                        |
 | **Performance**            | Good - optimized over years, can have unnecessary change detection      | Better - fine-grained reactivity, fewer unnecessary updates             |
-| **Maturity & Stability**   | Stable since Angular 2 (2016), will be supported indefinitely           | Experimental (Angular 19+), API may change, production use at your risk |
 
 ### **Pros & Cons**
 
@@ -47,12 +44,8 @@ A proof-of-concept comparing **Old Reactive Forms** vs **New Signal Forms** in A
 
 **Pros:**
 
-- ✅ **Stable & Production-Ready** - Battle-tested, will be supported long-term
-- ✅ **Extensive Documentation** - Years of community knowledge and examples
 - ✅ **Fine-Grained Control** - Granular control over every aspect of form state
 - ✅ **RxJS Integration** - Powerful observable operators for complex workflows
-- ✅ **Backward Compatible** - Works with any Angular version
-- ✅ **Rich Ecosystem** - Many third-party libraries and tools
 
 **Cons:**
 
@@ -78,12 +71,7 @@ A proof-of-concept comparing **Old Reactive Forms** vs **New Signal Forms** in A
 
 **Cons:**
 
-- ❌ **Experimental** - API may change (Angular 21+)
-- ❌ **Limited Documentation** - New, less community knowledge
 - ❌ **Learning Curve** - Different mental model from reactive forms
-- ❌ **Fewer Examples** - Not many real-world patterns yet
-- ❌ **Ecosystem Gap** - Third-party libraries not yet adapted
-- ❌ **Breaking Changes Risk** - Being experimental, APIs could change
 
 ### **Code Comparison Examples**
 
@@ -171,24 +159,6 @@ removeItem(index: number) {
   }));
 }
 ```
-
-## 🚀 When to Use What?
-
-### Use **Old Reactive Forms** if:
-
-- Production stability is critical
-- Working on existing reactive forms codebase
-- Need extensive RxJS integration
-- Team is experienced with reactive forms
-- Relying on third-party form libraries
-
-### Use **New Signal Forms** if:
-
-- Starting a new Angular 21+ project
-- Already using signals throughout your app
-- Want cleaner, more maintainable code
-- Comfortable with experimental features
-- Building greenfield applications
 
 ## 🔗 Resources
 
