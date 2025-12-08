@@ -81,6 +81,40 @@
 
     <div class="form-field">
       <label>Reincarnation Wishes (max 3)</label>
+
+      <div class="icon-selector">
+        <button
+          type="button"
+          class="icon-btn"
+          (click)="setReincarnationValue('dolphin')"
+          title="Dolphin"
+        >
+          🐬
+        </button>
+        <button type="button" class="icon-btn" (click)="setReincarnationValue('tree')" title="Tree">
+          🌳
+        </button>
+        <button type="button" class="icon-btn" (click)="setReincarnationValue('pig')" title="Pig">
+          🐷
+        </button>
+        <button
+          type="button"
+          class="icon-btn"
+          (click)="setReincarnationValue('beetle')"
+          title="Beetle"
+        >
+          🪲
+        </button>
+        <button
+          type="button"
+          class="icon-btn"
+          (click)="setReincarnationValue('waffle')"
+          title="Waffle"
+        >
+          🧇
+        </button>
+      </div>
+
       @for (wish of formModel().reincarnationWishes; track $index) {
       <div class="array-item">
         <input

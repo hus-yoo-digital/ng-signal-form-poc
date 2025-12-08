@@ -2,6 +2,14 @@
 
 A proof-of-concept comparing **Old Reactive Forms** vs **New Signal Forms** in Angular 21.
 
+## 🚀 Running the Project
+
+```bash
+npm start
+```
+
+Navigate to `http://localhost:4200/`
+
 ## 🔄 Old Reactive Forms vs New Signal Forms
 
 ### **Major Differences**

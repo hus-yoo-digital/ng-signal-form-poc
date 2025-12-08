@@ -112,4 +112,19 @@ export class NewSignalFormComponent {
       alert('Form submitted successfully! Check console for values.');
     }
   }
+
+  setReincarnationValue(value: string) {
+    // Find the first empty field in the array and set its value
+    const wishes = this.formModel().reincarnationWishes;
+    const emptyIndex = wishes.findIndex((wish) => !wish || wish.trim() === '');
+
+    if (emptyIndex !== -1) {
+      this.formModel.update((current) => ({
+        ...current,
+        reincarnationWishes: current.reincarnationWishes.map((wish, i) =>
+          i === emptyIndex ? value : wish
+        ),
+      }));
+    }
+  }
 }

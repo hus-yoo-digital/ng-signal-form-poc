@@ -140,4 +140,15 @@ export class OldReactiveFormComponent implements OnInit {
     }
     return '';
   }
+
+  setReincarnationValue(value: string) {
+    // Find the first empty field in the FormArray and set its value
+    for (let i = 0; i < this.reincarnationWishes.length; i++) {
+      const control = this.reincarnationWishes.at(i);
+      if (!control.value || control.value.trim() === '') {
+        control.setValue(value);
+        return;
+      }
+    }
+  }
 }
