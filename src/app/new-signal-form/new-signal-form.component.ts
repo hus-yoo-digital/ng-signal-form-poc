@@ -17,6 +17,7 @@ export class NewSignalFormComponent {
     username: '',
   });
 
+  // schemaPath type: SchemaPathTree<{ email: string; setUsername: boolean; username: string; }>
   userForm = form(this.formModel, (schemaPath) => {
     // Email validation
     required(schemaPath.email, { message: 'Email is required' });

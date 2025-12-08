@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-old-reactive-form',
@@ -12,13 +12,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 export class OldReactiveFormComponent implements OnInit {
   form!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
-
   ngOnInit() {
-    this.form = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      setUsername: [false],
-      username: [{ value: '', disabled: true }],
+    this.form = new FormGroup({
+      email: new FormControl('', [Validators.required, Validators.email]),
+      setUsername: new FormControl(false),
+      username: new FormControl({ value: '', disabled: true }),
     });
 
     // Watch the checkbox to enable/disable username field
