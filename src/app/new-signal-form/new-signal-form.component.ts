@@ -1,15 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, signal } from '@angular/core';
-import {
-  disabled,
-  email,
-  Field,
-  form,
-  minLength,
-  pattern,
-  required,
-  validate,
-} from '@angular/forms/signals';
+import { disabled, email, Field, form, required, validate } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-new-signal-form',
@@ -87,20 +78,37 @@ export class NewSignalFormComponent {
     // Username is disabled when checkbox is false
     disabled(schemaPath.username, ({ valueOf }: any) => !valueOf(schemaPath.setUsername));
 
-    // Username validation - runs conditionally
-    required(schemaPath.username, {
-      message: ({ valueOf }: any) =>
-        valueOf(schemaPath.setUsername) ? 'Username is required' : '',
-    });
-    minLength(schemaPath.username, 3, {
-      message: ({ valueOf }: any) =>
-        valueOf(schemaPath.setUsername) ? 'Username must be at least 3 characters' : '',
-    });
-    pattern(schemaPath.username, /^[a-zA-Z0-9_-]+$/, {
-      message: ({ valueOf }: any) =>
-        valueOf(schemaPath.setUsername)
-          ? 'Username can only contain letters, numbers, dashes, and underscores'
-          : '',
+    // Username validation - only runs when checkbox is checked
+    // This is more elegant: validators only apply when needed
+    validate(schemaPath.username, ({ valueOf, value }: any) => {
+      const shouldValidate = valueOf(schemaPath.setUsername);
+      if (!shouldValidate) {
+        return null; // No validation when checkbox is unchecked
+      }
+
+      const username = value();
+
+      // Required check - using validate() manually
+      if (!username || username.trim() === '') {
+        return { kind: 'required', message: 'Username is required' };
+      }
+
+      // Min length check - using validate() manually
+      // Note: This is what minLength() shorthand does internally
+      if (username.length < 3) {
+        return { kind: 'minLength', message: 'Username must be at least 3 characters' };
+      }
+
+      // Pattern check - using validate() manually
+      // Note: This is what pattern() shorthand does internally
+      if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
+        return {
+          kind: 'pattern',
+          message: 'Username can only contain letters, numbers, dashes, and underscores',
+        };
+      }
+
+      return null; // Valid
     });
 
     // Reincarnation wishes validation - each array item must be required

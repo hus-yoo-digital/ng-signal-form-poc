@@ -80,8 +80,8 @@ export class OldReactiveFormComponent implements OnInit {
         usernameControl?.enable();
         usernameControl?.setValidators([
           Validators.required,
-          Validators.minLength(3),
-          Validators.pattern(/^[a-zA-Z0-9_-]+$/),
+          Validators.minLength(3), // Validators.minLength is a shorthand for custom validator logic
+          Validators.pattern(/^[a-zA-Z0-9_-]+$/), // Validators.pattern is also a shorthand
         ]);
       } else {
         usernameControl?.disable();

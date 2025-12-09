@@ -155,6 +155,78 @@ removeItem(index: number) {
 }
 ```
 
+#### Conditional Validation
+
+**Old Way:**
+
+```typescript
+// Must manually manage validators
+this.form.get('setUsername')?.valueChanges.subscribe((checked) => {
+  const usernameControl = this.form.get('username');
+  if (checked) {
+    usernameControl?.setValidators([
+      Validators.required,
+      Validators.minLength(3),
+      Validators.pattern(/^[a-zA-Z0-9_-]+$/),
+    ]);
+  } else {
+    usernameControl?.clearValidators(); // Remove all validators
+  }
+  usernameControl?.updateValueAndValidity();
+});
+```
+
+**New Way:**
+
+```typescript
+// Validation only runs when needed - declarative approach
+validate(schemaPath.username, ({ valueOf, value }) => {
+  if (!valueOf(schemaPath.setUsername)) {
+    return null; // Skip validation when checkbox unchecked
+  }
+
+  const username = value();
+
+  if (!username || username.trim() === '') {
+    return { kind: 'required', message: 'Username is required' };
+  }
+
+  if (username.length < 3) {
+    return { kind: 'minLength', message: 'Min 3 characters' };
+  }
+
+  if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
+    return { kind: 'pattern', message: 'Invalid format' };
+  }
+
+  return null;
+});
+```
+
+### When to Use `validate()`
+
+| Use Case                   | Description                                                        | Example                                         |
+| -------------------------- | ------------------------------------------------------------------ | ----------------------------------------------- |
+| **Cross-field validation** | Access other field values via `valueOf()` for comparison           | Password confirmation matching                  |
+| **Conditional validation** | Skip validation based on other fields - return `null` early        | Username validation only when checkbox enabled  |
+| **Complex custom logic**   | Multiple validation rules in one function with custom error shapes | Min/max length + pattern + custom business rule |
+| **Array validation**       | Validate entire arrays or collections at once                      | Validate list has min/max items                 |
+
+**Note:** For simple single-field validation, use built-in validators: `required()`, `email()`, `minLength()`, `pattern()`.
+
+#### `validate()` Return Values
+
+| Return Value | Meaning                                       | Example                                                         |
+| ------------ | --------------------------------------------- | --------------------------------------------------------------- |
+| `null`       | Field is **valid** - no errors                | `return null;`                                                  |
+| Error Object | Field is **invalid** - contains error details | `return { kind: 'mismatch', message: 'Passwords must match' };` |
+
+**Error Object Structure:**
+
+- `kind`: String identifier for error type (e.g., `'required'`, `'mismatch'`, `'minLength'`)
+- `message`: Human-readable error message
+- **Custom properties**: You can add any additional properties you need (e.g., `minLength: 10`, `actualLength: 5`)
+
 ## 🔗 Resources
 
 - [Angular Signal Forms Documentation](https://angular.dev/guide/forms/signal-forms)
