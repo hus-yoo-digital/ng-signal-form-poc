@@ -72,7 +72,7 @@ A proof-of-concept comparing **Old Reactive Forms** vs **New Signal Forms** in A
 
 #### Creating a Form
 
-<small>Old</small>
+Old
 
 ```typescript
 form = new FormGroup({
@@ -81,7 +81,7 @@ form = new FormGroup({
 });
 ```
 
-<small>New</small>
+New
 
 ```typescript
 formModel = signal({
@@ -98,7 +98,7 @@ userForm = form(this.formModel, (schemaPath) => {
 
 #### Cross-Field Validation
 
-<small>Old</small>
+Old
 
 ```typescript
 this.form.get('password')?.valueChanges.subscribe(() => {
@@ -107,7 +107,7 @@ this.form.get('password')?.valueChanges.subscribe(() => {
 });
 ```
 
-<small>New</small>
+New
 
 ```typescript
 validate(schemaPath.confirmPassword, ({ valueOf, value }) => {
@@ -121,7 +121,7 @@ validate(schemaPath.confirmPassword, ({ valueOf, value }) => {
 
 #### Dynamic Arrays
 
-<small>Old</small>
+Old
 
 ```typescript
 get items(): FormArray {
@@ -137,7 +137,7 @@ removeItem(index: number) {
 }
 ```
 
-<small>New</small>
+New
 
 ```typescript
 addItem() {
@@ -157,7 +157,7 @@ removeItem(index: number) {
 
 #### Conditional Validation
 
-<small>Old</small>
+Old
 
 ```typescript
 // Must manually manage validators
@@ -176,7 +176,7 @@ this.form.get('setUsername')?.valueChanges.subscribe((checked) => {
 });
 ```
 
-<small>New</small>
+New
 
 ```typescript
 // Validation only runs when needed - declarative approach
