@@ -1,6 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, signal } from '@angular/core';
-import { disabled, email, Field, form, required, validate } from '@angular/forms/signals';
+import {
+  disabled,
+  email,
+  Field,
+  form,
+  minLength,
+  required,
+  validate,
+} from '@angular/forms/signals';
 
 @Component({
   selector: 'app-new-signal-form',
@@ -78,8 +86,13 @@ export class NewSignalFormComponent {
     // Username is disabled when checkbox is false
     disabled(schemaPath.username, ({ valueOf }: any) => !valueOf(schemaPath.setUsername));
 
-    // Username validation - only runs when checkbox is checked
-    // This is more elegant: validators only apply when needed
+    // Username validation - mixing shorthand and manual validate()
+    // For comparison: showing both approaches side-by-side
+
+    // Example 1: Using minLength() shorthand (built-in validator)
+    minLength(schemaPath.username, 3, { message: 'Username must be at least 3 characters' });
+
+    // Example 2: Using validate() manually for custom conditional logic
     validate(schemaPath.username, ({ valueOf, value }: any) => {
       const shouldValidate = valueOf(schemaPath.setUsername);
       if (!shouldValidate) {
@@ -91,12 +104,6 @@ export class NewSignalFormComponent {
       // Required check - using validate() manually
       if (!username || username.trim() === '') {
         return { kind: 'required', message: 'Username is required' };
-      }
-
-      // Min length check - using validate() manually
-      // Note: This is what minLength() shorthand does internally
-      if (username.length < 3) {
-        return { kind: 'minLength', message: 'Username must be at least 3 characters' };
       }
 
       // Pattern check - using validate() manually

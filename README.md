@@ -37,12 +37,12 @@ A proof-of-concept comparing **Old Reactive Forms** vs **New Signal Forms** in A
 
 #### Old Reactive Forms
 
-**Pros:**
+**Pros**
 
 - ✅ **Fine-Grained Control** - Granular control over every aspect of form state
 - ✅ **RxJS Integration** - Powerful observable operators for complex workflows
 
-**Cons:**
+**Cons**
 
 - ❌ **Verbose** - More boilerplate code required
 - ❌ **Manual Subscription Management** - Must handle `.subscribe()` and `unsubscribe()`
@@ -53,7 +53,7 @@ A proof-of-concept comparing **Old Reactive Forms** vs **New Signal Forms** in A
 
 #### New Signal Forms
 
-**Pros:**
+**Pros**
 
 - ✅ **Less Boilerplate** - Cleaner, more concise code
 - ✅ **Automatic Reactivity** - No manual subscriptions needed
@@ -64,7 +64,7 @@ A proof-of-concept comparing **Old Reactive Forms** vs **New Signal Forms** in A
 - ✅ **Centralized Validation** - All validation logic in one schema
 - ✅ **Modern Angular** - Aligned with signal-based architecture
 
-**Cons:**
+**Cons**
 
 - ❌ **Learning Curve** - Different mental model from reactive forms
 
@@ -72,7 +72,7 @@ A proof-of-concept comparing **Old Reactive Forms** vs **New Signal Forms** in A
 
 #### Creating a Form
 
-**Old Way:**
+<small>Old</small>
 
 ```typescript
 form = new FormGroup({
@@ -81,7 +81,7 @@ form = new FormGroup({
 });
 ```
 
-**New Way:**
+<small>New</small>
 
 ```typescript
 formModel = signal({
@@ -98,7 +98,7 @@ userForm = form(this.formModel, (schemaPath) => {
 
 #### Cross-Field Validation
 
-**Old Way:**
+<small>Old</small>
 
 ```typescript
 this.form.get('password')?.valueChanges.subscribe(() => {
@@ -107,7 +107,7 @@ this.form.get('password')?.valueChanges.subscribe(() => {
 });
 ```
 
-**New Way:**
+<small>New</small>
 
 ```typescript
 validate(schemaPath.confirmPassword, ({ valueOf, value }) => {
@@ -121,7 +121,7 @@ validate(schemaPath.confirmPassword, ({ valueOf, value }) => {
 
 #### Dynamic Arrays
 
-**Old Way:**
+<small>Old</small>
 
 ```typescript
 get items(): FormArray {
@@ -137,7 +137,7 @@ removeItem(index: number) {
 }
 ```
 
-**New Way:**
+<small>New</small>
 
 ```typescript
 addItem() {
@@ -157,7 +157,7 @@ removeItem(index: number) {
 
 #### Conditional Validation
 
-**Old Way:**
+<small>Old</small>
 
 ```typescript
 // Must manually manage validators
@@ -176,7 +176,7 @@ this.form.get('setUsername')?.valueChanges.subscribe((checked) => {
 });
 ```
 
-**New Way:**
+<small>New</small>
 
 ```typescript
 // Validation only runs when needed - declarative approach
