@@ -101,9 +101,17 @@ userForm = form(this.formModel, (schemaPath) => {
 Old
 
 ```typescript
+// Watch both password fields for cross-field validation
 this.form.get('password')?.valueChanges.subscribe(() => {
-  const confirmControl = this.form.get('confirmPassword');
-  confirmControl?.updateValueAndValidity();
+  this.form.get('confirmPassword')?.updateValueAndValidity();
+});
+
+this.form.get('confirmPassword')?.valueChanges.subscribe(() => {
+  const password = this.form.get('password')?.value;
+  const confirmPassword = this.form.get('confirmPassword')?.value;
+
+  const mismatch = confirmPassword && password !== confirmPassword;
+  this.form.get('confirmPassword')?.setErrors(mismatch ? { passwordMismatch: true } : null);
 });
 ```
 
@@ -187,20 +195,110 @@ validate(schemaPath.username, ({ valueOf, value }) => {
 
   const username = value();
 
+  // Required check (could use required() shorthand instead)
   if (!username || username.trim() === '') {
     return { kind: 'required', message: 'Username is required' };
   }
 
+  // Min length check (could use minLength() shorthand instead)
   if (username.length < 3) {
     return { kind: 'minLength', message: 'Min 3 characters' };
   }
 
+  // Pattern check (could use pattern() shorthand instead)
   if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
     return { kind: 'pattern', message: 'Invalid format' };
   }
 
   return null;
 });
+```
+
+#### Template Binding
+
+Old
+
+```html
+<!-- Must use [formGroup] on form element and formControlName on inputs -->
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <input type="email" formControlName="email" />
+
+  <!-- Access control via form.get() -->
+  @if (form.get('email')?.invalid) {
+  <span class="error">{{ getEmailError() }}</span>
+  }
+</form>
+```
+
+New
+
+```html
+<!-- No [formGroup] directive needed, only [field] on inputs -->
+<form (ngSubmit)="onSubmit()">
+  <input type="email" [field]="userForm.email" />
+
+  <!-- Direct access to field via signals -->
+  @if (userForm.email().invalid()) {
+  <span class="error">{{ userForm.email().errors()[0].message }}</span>
+  }
+</form>
+```
+
+#### Data Access (Read)
+
+Old
+
+```typescript
+// .value ignores disabled fields
+const formValue = this.form.value;
+console.log(formValue); // { email: 'test@test.com', password: '123' }
+// username is missing if disabled
+
+// .getRawValue() includes disabled fields
+const rawValue = this.form.getRawValue();
+console.log(rawValue); // { email: 'test@test.com', password: '123', username: 'john' }
+```
+
+New
+
+```typescript
+// Call signal - always includes all fields (enabled and disabled)
+const formValue = this.formModel();
+console.log(formValue); // { email: 'test@test.com', password: '123', username: 'john' }
+// No distinction between enabled/disabled - all data is accessible
+```
+
+#### Change Subscription
+
+Old
+
+```typescript
+// Manual subscription - must remember to unsubscribe!
+private subscription: Subscription;
+
+ngOnInit() {
+  this.subscription = this.form.valueChanges.subscribe((value) => {
+    console.log('Form changed:', value);
+    // Perform side effects
+  });
+}
+
+ngOnDestroy() {
+  this.subscription.unsubscribe(); // Must cleanup manually
+}
+```
+
+New
+
+```typescript
+// Automatic reactivity with effect - no manual cleanup needed
+constructor() {
+  effect(() => {
+    const formData = this.formModel();
+    console.log('Form changed:', formData);
+    // Perform side effects
+  }); // Automatically cleaned up when component destroyed
+}
 ```
 
 ### When to Use `validate()`
