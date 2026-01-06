@@ -89,6 +89,10 @@ formModel = signal({
   username: '',
 });
 
+// form() returns a FieldTree<TModel> object with field accessors
+// userForm is NOT a signal - it's a FieldTree
+// userForm.email is a field accessor (not called)
+// userForm.email() returns the FieldState signal (called to access state)
 userForm = form(this.formModel, (schemaPath) => {
   required(schemaPath.email);
   email(schemaPath.email);
